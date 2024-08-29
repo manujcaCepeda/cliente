@@ -1,44 +1,35 @@
 package ec.com.internacional.models;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
+import java.util.Collections;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "usuario")
-public class Usuario {
+@Table(name = "usuarios")
+public class Usuario implements UserDetails {
+
+	private static final long serialVersionUID = 3578345995514965646L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqUsuario")
-	@SequenceGenerator(sequenceName = "SEQ_USUARIO", allocationSize = 1, name = "seqUsuario")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	private String nombre;
-
-	private String apellido;
-
-	private Integer edad;
-
-	private String identificacion;
-
-	private String tipo;
-
-	private String cargo;
-
-	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
-	@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-	private List<Cuenta> cuentas = new ArrayList<>();
+	@Column(unique = true)
+	private String username;
+	private String password;
+	private String rol;
+	
+	private String sessionToken;
 
 	public Long getId() {
 		return id;
@@ -48,60 +39,65 @@ public class Usuario {
 		this.id = id;
 	}
 
-	public String getNombre() {
-		return nombre;
+	public String getPassword() {
+		return password;
 	}
 
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
-	public String getApellido() {
-		return apellido;
+	public String getRol() {
+		return rol;
 	}
 
-	public void setApellido(String apellido) {
-		this.apellido = apellido;
+	public void setRol(String rol) {
+		this.rol = rol;
 	}
 
-	public Integer getEdad() {
-		return edad;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
-	public void setEdad(Integer edad) {
-		this.edad = edad;
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return Collections.singletonList(new SimpleGrantedAuthority(rol));
+	}
+//	public Collection<? extends GrantedAuthority> getAuthorities() {
+//		return List.of(() -> rol); // Utilizamos rol como autoridad
+//	}
+
+	@Override
+	public String getUsername() {
+		return username;
 	}
 
-	public String getIdentificacion() {
-		return identificacion;
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
 	}
 
-	public void setIdentificacion(String identificacion) {
-		this.identificacion = identificacion;
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
 	}
 
-	public String getTipo() {
-		return tipo;
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
 	}
 
-	public void setTipo(String tipo) {
-		this.tipo = tipo;
+	@Override
+	public boolean isEnabled() {
+		return true;
 	}
 
-	public String getCargo() {
-		return cargo;
+	public String getSessionToken() {
+		return sessionToken;
 	}
 
-	public void setCargo(String cargo) {
-		this.cargo = cargo;
+	public void setSessionToken(String sessionToken) {
+		this.sessionToken = sessionToken;
 	}
-
-	public List<Cuenta> getCuentas() {
-		return cuentas;
-	}
-
-	public void setCuentas(List<Cuenta> cuentas) {
-		this.cuentas = cuentas;
-	}
-
+	
 }

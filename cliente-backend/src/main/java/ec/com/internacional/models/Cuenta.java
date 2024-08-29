@@ -39,9 +39,9 @@ public class Cuenta {
 	private BigDecimal saldoActual;
 
 	@ManyToOne
-	@JoinColumn(name = "usuario_id")
+	@JoinColumn(name = "cliente_id")
 	@JsonIgnore
-	private Usuario usuario;
+	private Cliente cliente;
 
 	@OneToMany(mappedBy = "cuenta", cascade = CascadeType.ALL)
 	@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -79,12 +79,12 @@ public class Cuenta {
 		this.saldoActual = saldoActual;
 	}
 
-	public Usuario getUsuario() {
-		return usuario;
+	public Cliente getCliente() {
+		return cliente;
 	}
 
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
 	}
 
 	public List<Movimiento> getMovimientos() {

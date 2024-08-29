@@ -1,0 +1,24 @@
+<form [formGroup]="purchaseForm" (ngSubmit)="onSubmit()">
+    <div>
+      <label for="nroCompra">Nro Compra</label>
+      <input id="nroCompra" formControlName="nroCompra" type="text">
+    </div>
+    <div>
+      <label for="descripcion">Descripcion</label>
+      <input id="descripcion" formControlName="descripcion" type="text">
+    </div>
+    <div>
+      <label for="precioTotal">Precio Total</label>
+      <input id="precioTotal" formControlName="precioTotal" type="number">
+    </div>
+    <button type="submit">Add Purchase</button>
+    <div *ngIf="errorMessage">{{ errorMessage }}</div>
+  </form>
+  
+  <h2>Purchases</h2>
+  <ul>
+    <li *ngFor="let purchase of purchases">
+      {{ purchase.nroCompra }} - {{ purchase.descripcion }} - {{ purchase.precioTotal }}
+    </li>
+  </ul>
+  

@@ -8,7 +8,7 @@ import { Cliente } from '../interfaces/clienteModel';
 })
 export class PersonaService {
 
-  baseUrl = `http://localhost:8080/usuarios`
+  baseUrl = `http://localhost:8080/clientes`
 
   constructor(private http:HttpClient) { }
 
